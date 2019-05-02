@@ -112,4 +112,22 @@ describe('multiple-label', function() {
 			checks['multiple-label'].evaluate.call(checkContext, target)
 		);
 	});
+
+	it('should return false given multiple labels if aria-labelledby points non aria-hidden label', function() {
+		fixture.innerHTML =
+			'<label for="target" aria-hidden="true">Foo</label><label for="target" id="lbl2">Baz</label><input type="text" id="target" aria-labelledby="lbl2">';
+		var target = fixture.querySelector('#target');
+		assert.isFalse(
+			checks['multiple-label'].evaluate.call(checkContext, target)
+		);
+	});
+
+	it('should return false given multiple labels if aria-labelledby points to all labels', function() {
+		fixture.innerHTML =
+			'<label for="target" id="lbl1" aria-hidden="true">Foo</label><label for="target" id="lbl2">Baz</label><input type="text" id="target" aria-labelledby="lbl1 lbl2">';
+		var target = fixture.querySelector('#target');
+		assert.isFalse(
+			checks['multiple-label'].evaluate.call(checkContext, target)
+		);
+	});
 });
